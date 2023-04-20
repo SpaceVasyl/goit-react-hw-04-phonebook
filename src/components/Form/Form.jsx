@@ -1,33 +1,37 @@
-import { Component } from 'react';
+import {  useState } from 'react';
 import css from './Form.module.css';
 
-export class  Form extends Component  {
-  state = {
-    name: '',
-    number: ''
-  }
-handleSubmit = (e) => {
-e.preventDefault()
-this.props.takeData(this.state)
-this.setState({
-  name: '',
-  number: ''
-})
-} 
-handleChange = ({target}) => {
-  const {value, name} = target;
-  this.setState({[name]:value})
-  
+export const Form = ({takeData}) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  takeData({name , number});
+  setName('');
+  setNumber('');
 }
-  render() {
-    return (
-    <form onSubmit={this.handleSubmit}>
+const handleChange = (e) => {
+  const {value, name} = e.target
+  switch (name) {
+    case 'name':
+    setName(value)
+      break;
+    case 'number':
+    setNumber(value) 
+      break;
+    default:
+      break;
+  }
+}
+  return (
+    <form onSubmit={handleSubmit}>
     <h3>Name</h3>
     <div><input
       type="text"
       name="name"
-      value={this.state.name}
-      onChange={this.handleChange}
+      value={name}
+      onChange={handleChange}
       className={css.nameinput}
       pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
       title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
@@ -35,13 +39,12 @@ handleChange = ({target}) => {
       <div><input
       type="tel"
       name="number"
-      value={this.state.number}
-      onChange={this.handleChange}
+      value={number}
+      onChange={handleChange}
       pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
       title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
       required
     /></div>
     <button type="submit">Add contact</button>
-    </form>)}   
+    </form>)
 }
-

@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 export const Contacts = ({contactFilter, deleteContact}) => {
-
 return (
 <>
 <ul className="contacts">{contactFilter.map(contact => {
